@@ -12,7 +12,9 @@ export const Button = ({ children, className, appName }: ButtonProps) => {
   return (
     <button
       className={className}
-      onClick={() => alert(`Hello from your ${appName} app!`)}
+      onClick={() => {
+          throw new Error("error from ui pkg");
+        }}
     >
       {children}
     </button>
