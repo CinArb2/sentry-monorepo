@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "dotEnv": [".env.production.local", ".env.local", ".env.production", ".env"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -13,7 +13,8 @@
     "dev": {
       "dotEnv": [".env.development.local", ".env.local", ".env.development", ".env"],
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "dependsOn": ["^build"]
     },
     "clean": {
       "cache": false

@@ -1,9 +1,8 @@
 
-import "../app/globals.css"
+// import "../styles/globals.css"
 import Image from "next/image";
-import { Code } from "@repo/ui/code";
-import styles from "../app/page.module.css";
-import { Button } from "@repo/ui/button";
+import styles from "../styles/page.module.css";
+import { Button } from "@repo/ui";
 
 function Gradient({
   conic,
@@ -42,7 +41,6 @@ export default function Page(): JSX.Element {
       <div className={styles.description}>
         <p>
           examples/basic&nbsp;
-          <Code className={styles.code}>web</Code>
         </p>
         <div>
           <a

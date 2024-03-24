@@ -2,16 +2,23 @@
   "name": "@repo/ui",
   "version": "0.0.0",
   "private": true,
+  "sideEffects": false,
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "exports": {
-    "./button": "./src/button.tsx",
-    "./card": "./src/card.tsx",
-    "./code": "./src/code.tsx"
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "generate:component": "turbo gen react-component",
-    "clean": "rimraf .turbo node_modules"
-
+    "clean": "rimraf .turbo node_modules",
+    "build": "tsup",
+    "dev": "pnpm run build --watch"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
