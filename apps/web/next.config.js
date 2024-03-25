@@ -13,18 +13,18 @@ const sentryWebpackPluginOptions = {
   authToken: process.env.SENTRY_AUTH_TOKEN,
 
   silent: false, // Suppresses all logs
-  include: [
-    {
-      paths: ['./.next'],
-      urlPrefix: '~/_next',
-    },
-    {
-      paths: ['../../packages/ui/dist'],
-      urlPrefix: '~/_next/static/packages/ui/dist',
-      ext: ['js', 'map', 'mjs'],
-    },
-  ],
-
+  // include: [
+  //   {
+  //     paths: ['./.next'],
+  //     urlPrefix: '~/_next',
+  //   },
+  //   {
+  //     paths: ['../../packages/ui/dist'],
+  //     urlPrefix: '~/_next/static/packages/ui/dist',
+  //     ext: ['js', 'map', 'mjs'],
+  //   },
+  // ],
+  ignore: []
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
@@ -33,10 +33,22 @@ const sentryWebpackPluginOptions = {
 const nextConfig = {
   productionBrowserSourceMaps: true,
   webpack: (config, options) => {
+    config.devtool = 'source-map'
+    console.log(config.devtool)
     config.module.rules.push({
       test: /\.(js|mjs)$/,
       enforce: 'pre',
-      use: ['source-map-loader'],
+      loader: require.resolve('source-map-loader'),
+      exclude: [/node_modules\/@next/, /node_modules\/next/, /node_modules/],
+      options: {
+        // Custom function to log the ingested source map
+        filterSourceMappingUrl: (url, resourcePath) => {
+          console.log('url', url)
+          console.log('resourcePath', resourcePath)
+
+          return true;
+        },
+      },
     });
     return config;
   },
