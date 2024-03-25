@@ -13,6 +13,17 @@ const sentryWebpackPluginOptions = {
   authToken: process.env.SENTRY_AUTH_TOKEN,
 
   silent: false, // Suppresses all logs
+  include: [
+    {
+      paths: ['./.next'],
+      urlPrefix: '~/_next',
+    },
+    {
+      paths: ['../../packages/ui/dist'],
+      urlPrefix: '~/_next/static/packages/ui/dist',
+      ext: ['js', 'map', 'mjs'],
+    },
+  ],
 
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
@@ -20,7 +31,15 @@ const sentryWebpackPluginOptions = {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // transpilePackages: ["@repo/ui"],
+  productionBrowserSourceMaps: true,
+  webpack: (config, options) => {
+    config.module.rules.push({
+      test: /\.(js|mjs)$/,
+      enforce: 'pre',
+      use: ['source-map-loader'],
+    });
+    return config;
+  },
   sentry: {
     // For all available options, see:
     // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
