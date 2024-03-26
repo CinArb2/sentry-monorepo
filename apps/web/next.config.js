@@ -13,46 +13,24 @@ const sentryWebpackPluginOptions = {
   authToken: process.env.SENTRY_AUTH_TOKEN,
 
   silent: false, // Suppresses all logs
-  // include: [
-  //   {
-  //     paths: ['./.next'],
-  //     urlPrefix: '~/_next',
-  //   },
-  //   {
-  //     paths: ['../../packages/ui/dist'],
-  //     urlPrefix: '~/_next/static/packages/ui/dist',
-  //     ext: ['js', 'map', 'mjs'],
-  //   },
-  // ],
-  ignore: []
+  ignore: [] // ignore logic that the Sentry SDK does
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  productionBrowserSourceMaps: true,
+  productionBrowserSourceMaps: false,
   webpack: (config, options) => {
-    config.devtool = 'source-map'
-    console.log(config.devtool)
     config.module.rules.push({
       test: /\.(js|mjs)$/,
       enforce: 'pre',
       loader: require.resolve('source-map-loader'),
-      exclude: [/node_modules\/@next/, /node_modules\/next/, /node_modules/],
-      options: {
-        // Custom function to log the ingested source map
-        filterSourceMappingUrl: (url, resourcePath) => {
-          console.log('url', url)
-          console.log('resourcePath', resourcePath)
-
-          return true;
-        },
-      },
+      exclude: [/node_modules\/@next/, /node_modules\/next/, /node_modules/]
     });
     return config;
   },
-  sentry: {
+  sentry: !process.env.NEXT_PUBLIC_SENTRY_DEBUG && {
     // For all available options, see:
     // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 
@@ -81,4 +59,5 @@ const nextConfig = {
   }
 }
 
-module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions)
+// Skip uploading source maps to Sentry every time the app is built locally
+module.exports = process.env.NEXT_PUBLIC_SENTRY_DEBUG ? nextConfig : withSentryConfig(nextConfig, sentryWebpackPluginOptions)

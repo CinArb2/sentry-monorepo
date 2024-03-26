@@ -18,11 +18,14 @@
     "generate:component": "turbo gen react-component",
     "clean": "rimraf .turbo node_modules",
     "build": "tsup",
+    "build:tsup": "tsc && rollup -c",
     "dev": "pnpm run build --watch"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "@sentry/cli": "^2.30.2",
     "@turbo/gen": "^1.12.4",
     "@types/eslint": "^8.56.5",
@@ -31,6 +34,10 @@
     "@types/react-dom": "^18.2.19",
     "eslint": "^8.57.0",
     "react": "^18.2.0",
+    "rollup-plugin-dts": "^6.1.0",
+    "rollup-plugin-esbuild": "^6.1.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-preserve-directives": "^1.1.1",
     "tsup": "^8.0.2",
     "typescript": "^5.3.3"
   },

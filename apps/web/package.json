@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:locale": "NEXT_PUBLIC_SENTRY_DEBUG=true next build",
     "start": "next start",
     "lint": "eslint . --max-warnings 0",
     "clean": "rimraf .turbo node_modules .next"
